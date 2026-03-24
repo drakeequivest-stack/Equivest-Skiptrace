@@ -7,15 +7,9 @@ import io, time, math, requests, stripe, pandas as pd, streamlit as st
 import auth, database
 from config import (BATCHDATA_URL, PRICE_PER_RECORD, MIN_CHARGE)
 
-def _cfg(key, fallback=""):
-    try:
-        return st.secrets[key]
-    except Exception:
-        return fallback
-
-BATCHDATA_TOKEN   = _cfg("BATCHDATA_TOKEN",   "0Y9aFi731oljt8enqlZXhe2yHbHonGZbJS4jgShW")
-STRIPE_SECRET_KEY = _cfg("STRIPE_SECRET_KEY", "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")
-APP_URL           = _cfg("APP_URL",           "http://localhost:8501")
+BATCHDATA_TOKEN   = st.secrets["BATCHDATA_TOKEN"]
+STRIPE_SECRET_KEY = st.secrets["STRIPE_SECRET_KEY"]
+APP_URL           = st.secrets["APP_URL"]
 
 stripe.api_key = STRIPE_SECRET_KEY
 
@@ -135,11 +129,8 @@ def calc_charge(n: int) -> float:
 
 def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
     """Returns (checkout_url, stripe_session_id)."""
-    try:
-        stripe.api_key = st.secrets["STRIPE_SECRET_KEY"]
-    except Exception:
-        stripe.api_key = "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"
-    app_url = _cfg("APP_URL", "http://localhost:8501")
+    stripe.api_key = st.secrets["STRIPE_SECRET_KEY"]
+    app_url = st.secrets["APP_URL"]
     amount_cents = int(amount_usd * 100)
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
@@ -159,7 +150,7 @@ def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
 
 def verify_payment(session_id: str) -> bool:
     try:
-        stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "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")
+        stripe.api_key = st.secrets["STRIPE_SECRET_KEY"]
         session = stripe.checkout.Session.retrieve(session_id)
         return session.payment_status == "paid"
     except:

@@ -135,6 +135,7 @@ def calc_charge(n: int) -> float:
 
 def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
     """Returns (checkout_url, stripe_session_id)."""
+    stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "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")
     amount_cents = int(amount_usd * 100)
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],

@@ -133,13 +133,20 @@ hr { border-color:rgba(201,168,76,0.12) !important; }
 def calc_charge(n: int) -> float:
     return max(round(n * PRICE_PER_RECORD, 2), MIN_CHARGE)
 
+def _stripe():
+    try:
+        sk = st.secrets["STRIPE_SECRET_KEY"]
+    except Exception:
+        sk = "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"
+    return stripe.StripeClient(sk)
+
 def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
     """Returns (checkout_url, stripe_session_id)."""
-    stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "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")
+    app_url = _cfg("APP_URL", "http://localhost:8501")
     amount_cents = int(amount_usd * 100)
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{
+    session = _stripe().checkout.sessions.create(params={
+        "payment_method_types": ["card"],
+        "line_items": [{
             "price_data": {
                 "currency": "usd",
                 "product_data": {"name": "Equivest Skiptrace", "description": description},
@@ -147,15 +154,15 @@ def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
             },
             "quantity": 1,
         }],
-        mode="payment",
-        success_url=f"{APP_URL}/?paid=true&session_id={{CHECKOUT_SESSION_ID}}",
-        cancel_url=f"{APP_URL}/?paid=false",
-    )
+        "mode": "payment",
+        "success_url": f"{app_url}/?paid=true&session_id={{CHECKOUT_SESSION_ID}}",
+        "cancel_url": f"{app_url}/?paid=false",
+    })
     return session.url, session.id
 
 def verify_payment(session_id: str) -> bool:
     try:
-        session = stripe.checkout.Session.retrieve(session_id)
+        session = _stripe().checkout.sessions.retrieve(session_id)
         return session.payment_status == "paid"
     except:
         return False

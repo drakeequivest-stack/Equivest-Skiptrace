@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .env
+.DS_Store
 .streamlit/secrets.toml
 _*_raw.csv
 *_progress.csv

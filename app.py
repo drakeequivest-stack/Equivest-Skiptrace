@@ -443,13 +443,7 @@ with tab1:
                 "address": address_data,
                 "amount_paid": charge,
             })
-            st.markdown(
-                f'<a href="{checkout_url}" target="_self" style="display:block;background:'
-                f'linear-gradient(135deg,#C9A84C,#E2C060);color:#060810;font-family:Outfit,sans-serif;'
-                f'font-weight:800;font-size:1rem;text-align:center;padding:0.75rem 2rem;'
-                f'border-radius:10px;text-decoration:none;margin-top:1rem;">💳  Proceed to Payment</a>',
-                unsafe_allow_html=True
-            )
+            st.link_button("💳  Proceed to Payment →", url=checkout_url, use_container_width=True)
 
 
 # ── TAB 2: Batch ──────────────────────────────────────────────────────────────
@@ -541,13 +535,7 @@ with tab2:
                 "orig_rows":  orig_rows,
                 "amount_paid": charge,
             })
-            st.markdown(
-                f'<a href="{checkout_url}" target="_self" style="display:block;background:'
-                f'linear-gradient(135deg,#C9A84C,#E2C060);color:#060810;font-family:Outfit,sans-serif;'
-                f'font-weight:800;font-size:1rem;text-align:center;padding:0.75rem 2rem;'
-                f'border-radius:10px;text-decoration:none;margin-top:1rem;">💳  Proceed to Payment</a>',
-                unsafe_allow_html=True
-            )
+            st.link_button("💳  Proceed to Payment →", url=checkout_url, use_container_width=True)
 
 
 # ── TAB 3: History ────────────────────────────────────────────────────────────

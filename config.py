@@ -15,7 +15,7 @@ BATCHDATA_URL   = "https://api.batchdata.com/api/v1/property/skip-trace"
 
 # Stripe (payments)
 STRIPE_PUBLIC_KEY = _s("STRIPE_PUBLIC_KEY", "pk_live_51T6nzxLt5c2HciK1wa2meadmuDhDwPobt9l6d8Wqry1pGwY58bSjTY7Srh7Hx9G7Pxs3XotVisQLf1yeGQVhwMo300E6nU9jPS")
-STRIPE_SECRET_KEY = _s("STRIPE_SECRET_KEY", "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")
+STRIPE_SECRET_KEY = _s("STRIPE_SECRET_KEY", "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")
 
 # Pricing
 PRICE_PER_RECORD = 0.13   # what you charge members

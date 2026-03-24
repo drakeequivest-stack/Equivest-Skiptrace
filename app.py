@@ -138,7 +138,7 @@ def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
     try:
         stripe.api_key = st.secrets["STRIPE_SECRET_KEY"]
     except Exception:
-        stripe.api_key = "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"
+        stripe.api_key = "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"
     app_url = _cfg("APP_URL", "http://localhost:8501")
     amount_cents = int(amount_usd * 100)
     session = stripe.checkout.Session.create(
@@ -159,7 +159,7 @@ def create_checkout(amount_usd: float, description: str) -> tuple[str, str]:
 
 def verify_payment(session_id: str) -> bool:
     try:
-        stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "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")
+        stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "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")
         session = stripe.checkout.Session.retrieve(session_id)
         return session.payment_status == "paid"
     except:

@@ -1,16 +1,24 @@
 """
 Equivest Skiptrace — Supabase database operations
 """
+import streamlit as st
 from supabase import create_client, Client
-from config import SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_KEY
 
+def _cfg(key, fallback=""):
+    try:
+        return st.secrets[key]
+    except Exception:
+        return fallback
 
 def _anon() -> Client:
-    return create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
-
+    url  = _cfg("SUPABASE_URL",      "https://ynqrcefaokyysrzqkqdm.supabase.co")
+    key  = _cfg("SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlucXJjZWZhb2t5eXNyenFrcWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTk4MjksImV4cCI6MjA4OTQ3NTgyOX0.6nmNGlfRpWWwxzMl85WikuvmGjP0h_9VvVeAVXkFqXw")
+    return create_client(url, key)
 
 def _admin() -> Client:
-    return create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    url  = _cfg("SUPABASE_URL",          "https://ynqrcefaokyysrzqkqdm.supabase.co")
+    key  = _cfg("SUPABASE_SERVICE_KEY",  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlucXJjZWZhb2t5eXNyenFrcWRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzg5OTgyOSwiZXhwIjoyMDg5NDc1ODI5fQ.PpGpykzNLNfcWAIJokN5Wa2BMF_8X0j7GaoePGKGmDw")
+    return create_client(url, key)
 
 
 # ── Auth ──────────────────────────────────────────────────────────────────────

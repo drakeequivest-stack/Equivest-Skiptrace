@@ -5,9 +5,17 @@ Pay-and-run skiptracing. Upload list → pay via Stripe → download results.
 
 import io, time, math, requests, stripe, pandas as pd, streamlit as st
 import auth, database
-from config import (BATCHDATA_TOKEN, BATCHDATA_URL,
-                    STRIPE_PUBLIC_KEY, STRIPE_SECRET_KEY,
-                    PRICE_PER_RECORD, MIN_CHARGE, APP_URL)
+from config import (BATCHDATA_URL, PRICE_PER_RECORD, MIN_CHARGE)
+
+def _cfg(key, fallback=""):
+    try:
+        return st.secrets[key]
+    except Exception:
+        return fallback
+
+BATCHDATA_TOKEN   = _cfg("BATCHDATA_TOKEN",   "0Y9aFi731oljt8enqlZXhe2yHbHonGZbJS4jgShW")
+STRIPE_SECRET_KEY = _cfg("STRIPE_SECRET_KEY", "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")
+APP_URL           = _cfg("APP_URL",           "http://localhost:8501")
 
 stripe.api_key = STRIPE_SECRET_KEY
 
